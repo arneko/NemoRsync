@@ -1,0 +1,13 @@
+[Nemo Action]
+
+Name=Rsync Paste
+Comment=Paste using Rsync
+
+#Exec=<NemoRsyncAction.py '%F'>
+Exec=<NemoRsync.py %P>
+
+Icon-Name=bug-buddy
+
+Selection=Any
+
+Extensions=any
