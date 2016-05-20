@@ -23,8 +23,10 @@ def rsyncify(uri):
             rsync_url="\"%s@%s:%s\""%(user,host,path)
         elif(host is not None):
             rsync_url="\"%s:%s\""%(host,path)
+    elif(data.scheme=="file"):
+        rsync_url="\"%s\""%(path)
     else:
-        rsync_url="\"%s\""%(path)    
+        os.system("zenity --error \"NemoRsync is made for local and ssh/sftp transfers only!\"")
     return rsync_url
 
 #Get clipboard if it's copied files
