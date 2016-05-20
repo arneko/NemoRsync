@@ -23,10 +23,8 @@ def rsyncify(uri):
             rsync_url="\"%s@%s:%s\""%(user,host,path)
         elif(host is not None):
             rsync_url="\"%s:%s\""%(host,path)
-    else:#(data.scheme=="file"):
-        rsync_url="\"%s\""%(path)
-    #else:
-    #    os.system("zenity --error --text=\"NemoRsync is made for local and ssh/sftp transfers only!\"")
+    else:
+        rsync_url="\"%s\""%(path)  
     return rsync_url
 
 #Get clipboard if it's copied files
@@ -35,7 +33,6 @@ result = clipboard.wait_for_contents(Gdk.Atom.intern("x-special/gnome-copied-fil
 str_clipboard=result.get_data()
 
 dest_uri=sys.argv[1]
-#dest_uri="/tmp/"#sys.argv[1]
 dest_rsync_path=rsyncify(dest_uri)
 
 #rsync file by file
