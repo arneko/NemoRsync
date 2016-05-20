@@ -23,10 +23,10 @@ def rsyncify(uri):
             rsync_url="\"%s@%s:%s\""%(user,host,path)
         elif(host is not None):
             rsync_url="\"%s:%s\""%(host,path)
-    elif(data.scheme=="file"):
+    else:#(data.scheme=="file"):
         rsync_url="\"%s\""%(path)
-    else:
-        os.system("zenity --error \"NemoRsync is made for local and ssh/sftp transfers only!\"")
+    #else:
+    #    os.system("zenity --error --text=\"NemoRsync is made for local and ssh/sftp transfers only!\"")
     return rsync_url
 
 #Get clipboard if it's copied files
@@ -35,15 +35,18 @@ result = clipboard.wait_for_contents(Gdk.Atom.intern("x-special/gnome-copied-fil
 str_clipboard=result.get_data()
 
 dest_uri=sys.argv[1]
-dest_rsync_path=rsyncify(target_uri)
+#dest_uri="/tmp/"#sys.argv[1]
+dest_rsync_path=rsyncify(dest_uri)
 
 #rsync file by file
 for clipboard_uri in str_clipboard.splitlines()[1:]:
     src_rsync_path=rsyncify(clipboard_uri)
     if use_Zenity:
         #This was taken from http://www.davidverhasselt.com/zenity-rsync-and-awk/ and would probably work for folders.
-        cmd="rsync %s %s %s |awk -f rsync.awk |zenity --progress --title \"Backing up USB-Stick\" --text=\"Scanning...\" --percentage=0 --auto-kill"%(rsync_args,src_rsync_path,dest_rsync)
+        cmd="rsync %s %s %s |awk -f rsync.awk |zenity --progress --title \"Backing up USB-Stick\" --text=\"Scanning...\" --percentage=0 --auto-kill"%(rsync_args,src_rsync_path,dest_rsync_path)
     else:
-        cmd="rsync %s %s %s"%(rsync_args,src_rsync_path,dest_rsync)
+        cmd="rsync %s %s %s"%(rsync_args,src_rsync_path,dest_rsync_path)
     #Execute command
+    debug_cmd="echo %s>/tmp/debug"%(cmd)
+    os.system(debug_cmd)
     os.system(cmd)
